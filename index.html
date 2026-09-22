@@ -225,7 +225,7 @@
     <div class="left-top-badge">
         <span>Ecrin</span>
         <span class="badge-heart">♥</span>
-        <span>Berke</span>
+        <span></span>
     </div>
 
     <div class="music-button" id="musicButton">
@@ -331,7 +331,6 @@
             }
         }, 150);
 
-        // Ekranın herhangi bir yerine tıklanırsa müziği başlatır (Kısıtlamaları aşmak için)
         document.body.addEventListener('click', () => {
             if (!isPlaying) {
                 playMusic();
@@ -393,7 +392,6 @@
             };
         }
 
-        // Kalp Atış Genliği Artırıldı (Genişleme mesafesi yükseltildi)
         function pulseWindow(phase, start, end, amplitude) {
             if (phase < start || phase > end) return 0;
             const t = (phase - start) / (end - start);
@@ -405,7 +403,6 @@
             const cycle = 1.05; 
             const phase = (timeSeconds % cycle) / cycle;
 
-            // Genlikler 0.12 ve 0.06 seviyesine çıkarıldı (Atış mesafesi çok belirgin oldu)
             const first = pulseWindow(phase, 0.015, 0.14, 0.12);
             const second = pulseWindow(phase, 0.18, 0.29, 0.06);
 
@@ -498,7 +495,6 @@
 
         function createWordParticles() {
             wordParticles = [];
-            // Sayı 140 ila 220 seviyesine çıkarıldı (Aşırı yoğun görünüm)
             const count = width < 650 ? 140 : 220; 
             for (let i = 0; i < count; i++) {
                 const angle = (i / count) * Math.PI * 2;
@@ -647,4 +643,15 @@
             drawHeartOutline(heartbeatScale);
             drawEKGLine(timeSec, heartbeatScale);
 
+            for (const particle of backgroundParticles) {
+                particle.update(delta);
+                particle.draw();
+            }
+
+            for (const particle of wordParticles) {
+                particle.update(delta);
+                particle.draw(heartbeatScale);
+            }
+
+            ctx.globalAlpha = 1;
   
