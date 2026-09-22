@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ecrin ❤️</title>
+    <title>Ecrin ❤️ Berke</title>
 
     <style>
         * {
@@ -105,10 +105,10 @@
 
         .main-name {
             font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(56px, 7vw, 96px);
+            font-size: clamp(48px, 6.5vw, 96px);
             font-weight: 500;
             line-height: 0.94;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             color: #ff426d;
             text-shadow:
                 0 0 4px rgba(255, 255, 255, 0.75),
@@ -119,29 +119,29 @@
         }
 
         .subtitle {
-            margin-top: 13px;
+            margin-top: 10px;
             font-family: Georgia, "Times New Roman", serif;
-            font-size: clamp(13px, 1.45vw, 18px);
+            font-size: clamp(12px, 1.35vw, 18px);
             font-style: italic;
-            letter-spacing: 3.2px;
+            letter-spacing: 2.5px;
             color: rgba(255, 231, 237, 0.92);
             text-shadow: 0 0 9px rgba(255, 62, 108, 0.28);
         }
 
         .message-card {
-            width: min(90vw, 500px);
-            margin-top: 20px;
-            padding: 17px 24px 15px;
-            border: 1px solid rgba(255, 42, 91, 0.46);
+            width: min(88vw, 500px);
+            margin-top: 16px;
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 42, 91, 0.4);
             border-radius: 17px;
-            background: linear-gradient(180deg, rgba(25, 4, 14, 0.88), rgba(8, 1, 6, 0.9));
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 23px rgba(255, 0, 68, 0.14);
+            background: rgba(18, 2, 10, 0.65); /* Mobilde kalbi göstermek için şeffaflaştırıldı */
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 20px rgba(255, 0, 68, 0.18);
         }
 
         .message {
-            font-size: clamp(13px, 1.25vw, 16px);
-            line-height: 1.52;
+            font-size: clamp(12px, 1.2vw, 16px);
+            line-height: 1.48;
             font-weight: 300;
             color: #ffe8ee;
         }
@@ -149,9 +149,9 @@
         .divider {
             display: flex;
             align-items: center;
-            width: 74%;
-            margin: 11px auto 6px;
-            gap: 10px;
+            width: 70%;
+            margin: 9px auto 5px;
+            gap: 8px;
         }
 
         .divider::before,
@@ -171,12 +171,12 @@
 
         .divider-heart {
             color: #ff315f;
-            font-size: 16px;
+            font-size: 15px;
             text-shadow: 0 0 8px rgba(255, 23, 79, 0.9);
         }
 
         .final-message {
-            font-size: clamp(12px, 1.2vw, 15px);
+            font-size: clamp(11px, 1.15vw, 15px);
             font-weight: 600;
             color: #ff6686;
         }
@@ -193,7 +193,7 @@
             .left-top-badge,
             .music-button {
                 top: 12px;
-                padding: 8px 12px;
+                padding: 7px 14px;
                 font-size: 11px;
             }
 
@@ -201,21 +201,21 @@
             .music-button { right: 12px; }
 
             .content {
-                transform: translate(-50%, -42%);
+                transform: translate(-50%, -46%);
             }
 
             .main-name {
-                letter-spacing: 5px;
+                letter-spacing: 4px;
             }
 
             .subtitle {
-                margin-top: 9px;
-                letter-spacing: 2px;
+                margin-top: 8px;
+                letter-spacing: 1.5px;
             }
 
             .message-card {
-                margin-top: 14px;
-                padding: 14px 16px;
+                margin-top: 12px;
+                padding: 12px 14px;
             }
         }
     </style>
@@ -225,7 +225,7 @@
     <div class="left-top-badge">
         <span>Ecrin</span>
         <span class="badge-heart">♥</span>
-        <span></span>
+        <span>Berke</span>
     </div>
 
     <div class="music-button" id="musicButton">
@@ -346,7 +346,7 @@
             }
         });
 
-        /* CANVAS VE HIZLANDIRILMIŞ / YÜKSEK GENLİKLİ KALP ATIŞI */
+        /* CANVAS VE MOBİL UYUMLU KALP ATIŞI */
         const canvas = document.getElementById("heartCanvas");
         const ctx = canvas.getContext("2d", { alpha: true });
 
@@ -383,11 +383,14 @@
             };
         }
 
+        /* Mobil ekran boyutu için dinamik ölçekleme */
         function getHeartGeometry() {
-            const scale = Math.min(width / 38, height / 28);
+            const isMobile = width < 650;
+            // Mobilde kartın etrafından taşması için oran düzenlendi
+            const scale = isMobile ? Math.min(width / 26, height / 32) : Math.min(width / 38, height / 28);
             return {
                 centerX: width / 2,
-                centerY: height / 2 - (width < 650 ? 4 : 12),
+                centerY: height / 2 - (isMobile ? 15 : 12),
                 scale
             };
         }
@@ -450,18 +453,17 @@
             return array[Math.floor(Math.random() * array.length)];
         }
 
-        /* ÇİZGİYİ TAMAMEEN KAPLAYAN AŞIRI YOĞUN KELİMELER */
         let wordParticles = [];
 
         class WordParticle {
             constructor(angle) {
                 this.angle = angle;
                 this.speed = 0.20 + Math.random() * 0.12; 
-                this.opacity = 0.82 + Math.random() * 0.18;
+                this.opacity = 0.85 + Math.random() * 0.15;
 
                 const text = randomFrom(CONFIG.words);
                 const color = randomFrom(CONFIG.colors);
-                const size = width < 650 ? (11 + Math.floor(Math.random() * 3)) : (14 + Math.floor(Math.random() * 4));
+                const size = width < 650 ? (10 + Math.floor(Math.random() * 3)) : (14 + Math.floor(Math.random() * 4));
 
                 this.sprite = makeWordSprite(text, size, color);
             }
@@ -495,7 +497,7 @@
 
         function createWordParticles() {
             wordParticles = [];
-            const count = width < 650 ? 140 : 220; 
+            const count = width < 650 ? 120 : 220; 
             for (let i = 0; i < count; i++) {
                 const angle = (i / count) * Math.PI * 2;
                 wordParticles.push(new WordParticle(angle));
@@ -527,20 +529,20 @@
             }
 
             ctx.closePath();
-            ctx.strokeStyle = "rgba(255, 35, 87, 0.75)";
-            ctx.lineWidth = 3;
+            ctx.strokeStyle = "rgba(255, 35, 87, 0.85)";
+            ctx.lineWidth = width < 650 ? 2.5 : 3.5;
             ctx.shadowColor = "rgba(255, 0, 72, 1)";
-            ctx.shadowBlur = 16;
+            ctx.shadowBlur = width < 650 ? 12 : 18;
             ctx.stroke();
             ctx.restore();
         }
 
-        /* EKG ALT NABIZ ÇİZGİSİ */
+        /* EKG NABIZ ÇİZGİSİ */
         function drawEKGLine(timeSeconds, heartbeatScale) {
             ctx.save();
             ctx.beginPath();
             
-            const lineY = height - (width < 650 ? 25 : 40);
+            const lineY = height - (width < 650 ? 20 : 40);
             const speed = 160; 
             const xOffset = (timeSeconds * speed) % width;
 
@@ -552,7 +554,7 @@
 
                 if (distFromPulse > 0 && distFromPulse < 80) {
                     const norm = distFromPulse / 80;
-                    const peak = Math.sin(norm * Math.PI * 4) * (26 * (heartbeatScale - 0.95));
+                    const peak = Math.sin(norm * Math.PI * 4) * (24 * (heartbeatScale - 0.95));
                     y -= peak;
                 }
 
@@ -648,10 +650,4 @@
                 particle.draw();
             }
 
-            for (const particle of wordParticles) {
-                particle.update(delta);
-                particle.draw(heartbeatScale);
-            }
-
-            ctx.globalAlpha = 1;
-  
+            for (co
